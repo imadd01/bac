@@ -1,3 +1,4 @@
 - an option to choose which parts of the exam to work on (ex: les fonctions only, or Nucleaire + electricite), then gives a recommended timer, then logs that timer and work done
 - a countdown towards the national exam
 - a way to filter exams based on chapters covered in them and their relative difficulty
+- a timer that gets saved and pushes you to improve each time
