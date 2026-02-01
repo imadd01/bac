@@ -14,10 +14,23 @@
       <iframe id="pdf-viewer" class="pdf-frame"></iframe>
 
      
-      <aside class="timer-panel">
-        <h3>Timer</h3>
-        <div id="timer">00:00:00</div>
-      </aside>
+     <aside class="timer-panel">
+  <h3>Timer</h3>
+
+  <div id="timer-display" class="timer-display">00:00:00</div>
+
+  <div class="timer-inputs">
+    <label>Hrs <input id="t-hours" type="number" min="0" value="0"></label>
+    <label>Min <input id="t-mins"  type="number" min="0" max="59" value="60"></label>
+    <label>Sec <input id="t-secs"  type="number" min="0" max="59" value="0"></label>
+  </div>
+
+  <div class="timer-buttons">
+    <button id="t-start">Start</button>
+    <button id="t-pause" disabled>Pause</button>
+    <button id="t-reset">Reset</button>
+  </div>
+</aside>
     </div>
 
     <script>
