@@ -21,9 +21,99 @@
     </div>
 
     <script>
-      const urlParams = new URLSearchParams(window.location.search);
-      const pdfPath = urlParams.get('pdf');
-      document.getElementById('pdf-viewer').src = pdfPath;
-    </script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const pdfPath = urlParams.get('pdf');
+  document.getElementById('pdf-viewer').src = pdfPath;
+  const display = document.getElementById('timer-display');
+  const hIn = document.getElementById('t-hours');
+  const mIn = document.getElementById('t-mins');
+  const sIn = document.getElementById('t-secs');
+
+  const btnStart = document.getElementById('t-start');
+  const btnPause = document.getElementById('t-pause');
+  const btnReset = document.getElementById('t-reset');
+
+  let intervalId = null;
+  let endTimeMs = null;
+  let remainingMs = 0;
+
+  function clamp(n, min, max){ return Math.min(max, Math.max(min, n)); }
+
+  function readInputMs(){
+    const h = clamp(Number(hIn.value || 0), 0, 999);
+    const m = clamp(Number(mIn.value || 0), 0, 59);
+    const s = clamp(Number(sIn.value || 0), 0, 59);
+    return (h * 3600 + m * 60 + s) * 1000;
+  }
+
+  function format(ms){
+    ms = Math.max(0, ms);
+    const total = Math.ceil(ms / 1000);
+    const h = String(Math.floor(total / 3600)).padStart(2,'0');
+    const m = String(Math.floor((total % 3600) / 60)).padStart(2,'0');
+    const s = String(total % 60).padStart(2,'0');
+    return `${h}:${m}:${s}`;
+  }
+
+  function render(){
+    const msLeft = endTimeMs ? (endTimeMs - Date.now()) : remainingMs;
+    display.textContent = format(msLeft);
+
+    if (endTimeMs && msLeft <= 0){
+      stop();
+      remainingMs = 0;
+      display.textContent = "00:00:00";
+      alert("Time's up!");
+    }
+  }
+
+  function start(){
+    if (intervalId) return;
+
+    // If not running, take the current input as the starting time
+    if (!endTimeMs){
+      remainingMs = readInputMs();
+    }
+    if (remainingMs <= 0) return;
+
+    endTimeMs = Date.now() + remainingMs;
+    intervalId = setInterval(render, 250);
+    render();
+
+    btnStart.disabled = true;
+    btnPause.disabled = false;
+  }
+
+  function pause(){
+    if (!intervalId) return;
+    remainingMs = Math.max(0, endTimeMs - Date.now());
+    stop();
+
+    btnStart.disabled = false;
+    btnPause.disabled = true;
+    render();
+  }
+
+  function reset(){
+    stop();
+    remainingMs = readInputMs();
+    btnStart.disabled = false;
+    btnPause.disabled = true;
+    render();
+  }
+
+  function stop(){
+    clearInterval(intervalId);
+    intervalId = null;
+    endTimeMs = null;
+  }
+
+  btnStart.addEventListener('click', start);
+  btnPause.addEventListener('click', pause);
+  btnReset.addEventListener('click', reset);
+
+  remainingMs = readInputMs();
+  render();
+</script>
   </body>
 </html>
