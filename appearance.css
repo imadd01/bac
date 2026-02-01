@@ -311,7 +311,6 @@ background: rgba(255,255,255,0.10);
   opacity: 0.9;
 }
 
-/* Inputs styling */
 .timer-inputs input{
   width: 100%;
   padding: 10px 10px;
@@ -327,7 +326,6 @@ background: rgba(255,255,255,0.10);
   box-shadow: 0 0 0 3px rgba(74,163,255,0.18);
 }
 
-/* Remove number spinners (optional) */
 .timer-inputs input[type="number"]::-webkit-outer-spin-button,
 .timer-inputs input[type="number"]::-webkit-inner-spin-button{
   -webkit-appearance: none;
@@ -349,9 +347,9 @@ background: rgba(255,255,255,0.10);
   -webkit-appearance: none;
 
   padding: 11px 12px;
-  border-radius: 14px;                 /* rounded corners */
+  border-radius: 14px;                 
   border: 1px solid rgba(255,255,255,0.14);
-  background: rgba(255,255,255,0.06);  /* “glass” */
+  background: rgba(255,255,255,0.06);  
   color: inherit;
 
   font-weight: 650;
@@ -379,7 +377,6 @@ background: rgba(255,255,255,0.10);
     inset 0 1px 0 rgba(255,255,255,0.05);
 }
 
-/* Nice accessible focus */
 .timer-buttons button:focus-visible{
   outline: none;
   box-shadow:
@@ -393,13 +390,27 @@ background: rgba(255,255,255,0.10);
   cursor: not-allowed;
   transform: none;
 }
+.timer-sep{
+  border: 0;
+  height: 1px;
+  margin: 14px 0; 
+  background: rgba(255,255,255,0.14);
+}
+.timer-note{
+  margin-top: 14px;
+  font-size: 0.9rem;
+  line-height: 1.35;
+  opacity: 0.85;
+
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(0,0,0,0.18);
+}
 
 
 
-#t-pause{ border-color: rgba(255,200,70,0.35); }
-#t-reset{ border-color: rgba(255,120,120,0.35); }
 
-/* Optional: color-code the buttons by ID */
 #t-start{ border-color: rgba(80, 200, 120, 0.35); }
 #t-pause{ border-color: rgba(255, 200, 70, 0.35); }
 #t-reset{ border-color: rgba(255, 120, 120, 0.35); }
