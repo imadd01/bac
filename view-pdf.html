@@ -1,26 +1,29 @@
 <!doctype html>
 <html>
-    
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>View PDF</title>
-        <link rel="stylesheet" href="appearance.css"/>
-    </head>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>View PDF</title>
+    <link rel="stylesheet" href="appearance.css"/>
+  </head>
 
-    <body>
-        <a href="index.html">← Back to Exams</a>
-        
-        <iframe id="pdf-viewer class="pdf-frame"></iframe>
+  <body>
+    <a href="index.html">← Back to Exams</a>
 
-        <script>
+    <div class="exam-layout">
+      <iframe id="pdf-viewer" class="pdf-frame"></iframe>
 
-            const urlParams = new URLSearchParams(window.location.search);
-            const pdfPath = urlParams.get('pdf');
-            
-            document.getElementById('pdf-viewer').src = pdfPath;
-        </script>
-        
-    </body>
+     
+      <aside class="timer-panel">
+        <h3>Timer</h3>
+        <div id="timer">00:00:00</div>
+      </aside>
+    </div>
 
+    <script>
+      const urlParams = new URLSearchParams(window.location.search);
+      const pdfPath = urlParams.get('pdf');
+      document.getElementById('pdf-viewer').src = pdfPath;
+    </script>
+  </body>
 </html>
