@@ -15,7 +15,7 @@
 
      
      <aside class="timer-panel">
-  <h3>Timer</h3>
+  <h3>Minuteur</h3>
 
   <div id="timer-display" class="timer-display">00:00:00</div>
 
@@ -26,9 +26,9 @@
   </div>
 
   <div class="timer-buttons">
-    <button id="t-start">Start</button>
-    <button id="t-pause" disabled>Pause</button>
-    <button id="t-reset">Reset</button>
+    <button id="t-start">►</button>
+    <button id="t-pause" disabled>⏹</button>
+    <button id="t-reset">⭯</button>
   </div>
 </aside>
     </div>
@@ -82,8 +82,6 @@
 
   function start(){
     if (intervalId) return;
-
-    // If not running, take the current input as the starting time
     if (!endTimeMs){
       remainingMs = readInputMs();
     }
