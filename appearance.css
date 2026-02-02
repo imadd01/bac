@@ -53,7 +53,7 @@ margin: 0 auto;
 padding: 44px 18px 64px;
 }
 
-.hero{
+.main{
 border-radius: 22px;
 padding: 22px 20px;
 background: var(--surface-strong);
@@ -61,7 +61,7 @@ border: 1px solid var(--border);
 box-shadow: var(--shadow);
 }
 
-.hero-title{
+.main-title{
 text-align:center;
 font-family: 'Inter', sans serif;
 font-weight: 800;
@@ -71,10 +71,10 @@ line-height: 1.12;
 color:white;
 }
 
-.hero-sub{
+.main-sub{
 margin-top: 6px;
 margin-bottom: 18px;
-color: var(--muted);
+color: white;
 font-size: 15px;
 line-height: 1.45;
 font-family: "Outfit", system-ui, sans-serif;
@@ -82,11 +82,12 @@ font-family: "Outfit", system-ui, sans-serif;
 
 .section-title{
 margin: 22px 0 12px;
-color: var(--muted);
+color: white;
 font-weight: 800;
 letter-spacing: 0.7px;
-text-transform: uppercase;
-font-size: 12px;
+font-size: 16px;
+text-align:center;
+font-family: "Outfit", system-ui, sans-serif;
 }
 
 .grid{
@@ -101,7 +102,6 @@ max-width: 900px;
 list-style: none;
 padding: 0;
 margin: 0;
-
 display: grid;
 grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
 gap: 12px;
@@ -135,29 +135,15 @@ border-color: rgba(124,182,255,0.45);
 background: rgba(255,255,255,0.11);
 }
 
-.btn:active{
+.button:active{
 transform: translateY(0px);
 }
 
-.btn:focus-visible{
+.button:focus-visible{
 outline: 2px solid rgba(124,182,255,0.75);
 outline-offset: 3px;
 }
 
-.back,
-.back-link{
-display: inline-block;
-margin: 0 0 14px;
-color: var(--muted);
-text-decoration: none;
-font-weight: 700;
-}
-
-.back:hover,
-.back-link:hover{
-color: var(--text);
-text-decoration: underline;
-}
 
 .countdown{
 display: grid;
@@ -184,11 +170,11 @@ color: rgba(255,255,255,0.95);
 
 .timebox .label{
 display: block;
-margin-top: 7px;
-font-size: 12px;
+margin-top: 9px;
+font-size: 14px;
 letter-spacing: 0.7px;
 text-transform: uppercase;
-color: var(--muted);
+color: white;
 }
 
 .list{
@@ -419,21 +405,20 @@ background: rgba(255,255,255,0.10);
 .intro-panel{
   max-width: 1000px;
   margin: 18px auto;
-  padding: 16px;
-
+  padding: 18px;
   border: 1px solid var(--border);
   border-radius: 16px;
-
   background: rgba(20, 28, 40, 0.55);
   backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
 
-  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
 }
 
 .intro-panel h1{
-  margin: 0 0 8px;
-  font-size: 1.6rem;
+  margin: 0 0 10px;
+  font-family: 'Inter', sans serif;
+  font-size: 2rem;
+  text-align: center;
+  font-weight: 600;
 }
 
 .intro-panel p{
