@@ -62,9 +62,13 @@ box-shadow: var(--shadow);
 }
 
 .hero-title{
+text-align:center;
+font-family: 'Inter', sans serif;
 font-weight: 800;
-font-size: clamp(28px, 3.8vw, 44px);
+font-size: 3rem
+letter-spacing:0.5px;
 line-height: 1.12;
+color:white;
 }
 
 .hero-sub{
