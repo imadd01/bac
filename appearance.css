@@ -391,13 +391,12 @@ background: rgba(255,255,255,0.10);
   background: rgba(255,255,255,0.14);
 }
 .timer-note{
-  margin-top: 14px;
-  font-size: 0.9rem;
+  margin-top: 16px;
+  font-size: 1.2rem;
   line-height: 1.35;
-  opacity: 0.85;
-
+  opacity: 1;
   padding: 10px 12px;
-  border-radius: 12px;
+  border-radius: 13px;
   border: 1px solid rgba(255,255,255,0.12);
   background: rgba(0,0,0,0.18);
 }
