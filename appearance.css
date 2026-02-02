@@ -412,7 +412,31 @@ background: rgba(255,255,255,0.10);
   background: rgba(0,0,0,0.18);
 }
 
+.intro-panel{
+  max-width: 1000px;
+  margin: 18px auto;
+  padding: 16px;
 
+  border: 1px solid var(--border);
+  border-radius: 16px;
+
+  background: rgba(20, 28, 40, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+}
+
+.intro-panel h1{
+  margin: 0 0 8px;
+  font-size: 1.6rem;
+}
+
+.intro-panel p{
+  margin: 0;
+  line-height: 1.4;
+  opacity: 0.9;
+}
 
 
 #t-start{ border-color: rgba(80, 200, 120, 0.35); }
