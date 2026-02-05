@@ -107,9 +107,9 @@ padding: 10px;
 .section-title{
 margin: 22px 0 12px;
 color: white;
-font-weight: 800;
-letter-spacing: 1px;
-font-size: 20px;
+font-weight: 1000;
+letter-spacing: 0.8px;
+font-size: 24px;
 text-align:center;
 font-family: "Outfit", system-ui, sans-serif;
 text-shadow: 0 6px 16px rgba(0,0,0,0.35);
