@@ -1,59 +1,134 @@
 <!doctype html>
-<html lang="fr">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>View PDF</title>
-  <style>
-    body { margin: 0; font-family: system-ui, Arial, sans-serif; }
-    header { padding: 12px 16px; border-bottom: 1px solid #ddd; }
-    #viewer { width: 100%; height: calc(100vh - 58px); border: 0; display: block; }
-    .small { color: #444; font-size: 14px; }
-  </style>
-</head>
-<body>
-  <header>
-    <div><a href="index.html">← Back</a></div>
-    <div class="small" id="filename"></div>
-    <div class="small"><a id="download" href="#" target="_blank" rel="noopener">Download/Open</a></div>
-  </header>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>View PDF</title>
+    <link rel="stylesheet" href="appearance.css"/>
+  </head>
 
-  <iframe id="viewer" title="PDF viewer"></iframe>
+  <body>
+    <a href="index.html">← Back to Exams</a>
 
-  <script>
-    const params = new URLSearchParams(location.search);
-    const pdfParam = params.get("pdf");
+    <div class="exam-layout">
+      <iframe id="pdf-viewer" class="pdf-frame"></iframe>
 
-    const viewer = document.getElementById("viewer");
-    const filename = document.getElementById("filename");
-    const download = document.getElementById("download");
 
-    if (!pdfParam) {
-      filename.textContent = "No PDF specified. Use ?pdf=path/to/file.pdf";
-      viewer.remove();
-      download.remove();
-    } else {
-      const pdf = decodeURIComponent(pdfParam);
+     <aside class="timer-panel">
+  <h3>Minuteur</h3>
 
-      const isPdf = pdf.toLowerCase().endsWith(".pdf");
-      const hasTraversal = pdf.includes("..");
-      const isBadScheme = /^[a-zA-Z]+:/.test(pdf); 
+  <div id="timer-display" class="timer-display">00:00:00</div>
 
-      if (!isPdf || hasTraversal || isBadScheme) {
-        filename.textContent = "Invalid PDF path.";
-        viewer.remove();
-        download.remove();
-      } else {
-        filename.textContent = pdf;
-        viewer.src = pdf;
-        download.href = pdf;
-      }
+  <div class="timer-inputs">
+    <label>Hrs <input id="t-hours" type="number" min="0" value="0"></label>
+    <label>Min <input id="t-mins"  type="number" min="0" max="59" value="60"></label>
+    <label>Sec <input id="t-secs"  type="number" min="0" max="59" value="0"></label>
+  </div>
+
+  <div class="timer-buttons">
+    <button id="t-start">►</button>
+    <button id="t-pause" disabled>⏹</button>
+    <button id="t-reset">⭯</button>
+
+    <hr class="timer-sep">
+  </div>
+       <p class="timer-note">
+« La vraie difficulté de l’examen national, c’est le temps très limité. Beaucoup d’élèves connaissent bien le cours, mais n’arrivent pas à finir à cause d’une mauvaise gestion du temps. Entraîne-toi avec un chronomètre et essaie de t’améliorer à chaque fois. »</p>
+</aside>
+    </div>
+
+    <script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const pdfPath = urlParams.get('pdf');
+  document.getElementById('pdf-viewer').src = pdfPath;
+  const display = document.getElementById('timer-display');
+  const hIn = document.getElementById('t-hours');
+  const mIn = document.getElementById('t-mins');
+  const sIn = document.getElementById('t-secs');
+
+  const btnStart = document.getElementById('t-start');
+  const btnPause = document.getElementById('t-pause');
+  const btnReset = document.getElementById('t-reset');
+
+  let intervalId = null;
+  let endTimeMs = null;
+  let remainingMs = 0;
+
+  function clamp(n, min, max){ return Math.min(max, Math.max(min, n)); }
+
+  function readInputMs(){
+    const h = clamp(Number(hIn.value || 0), 0, 999);
+    const m = clamp(Number(mIn.value || 0), 0, 59);
+    const s = clamp(Number(sIn.value || 0), 0, 59);
+    return (h * 3600 + m * 60 + s) * 1000;
+  }
+
+  function format(ms){
+    ms = Math.max(0, ms);
+    const total = Math.ceil(ms / 1000);
+    const h = String(Math.floor(total / 3600)).padStart(2,'0');
+    const m = String(Math.floor((total % 3600) / 60)).padStart(2,'0');
+    const s = String(total % 60).padStart(2,'0');
+    return `${h}:${m}:${s}`;
+  }
+
+  function render(){
+    const msLeft = endTimeMs ? (endTimeMs - Date.now()) : remainingMs;
+    display.textContent = format(msLeft);
+
+    if (endTimeMs && msLeft <= 0){
+      stop();
+      remainingMs = 0;
+      display.textContent = "00:00:00";
+      alert("Time's up!");
     }
-  </script>
-</body>
+  }
+
+  function start(){
+    if (intervalId) return;
+    if (!endTimeMs){
+      remainingMs = readInputMs();
+    }
+    if (remainingMs <= 0) return;
+
+    endTimeMs = Date.now() + remainingMs;
+    intervalId = setInterval(render, 250);
+    render();
+
+    btnStart.disabled = true;
+    btnPause.disabled = false;
+  }
+
+  function pause(){
+    if (!intervalId) return;
+    remainingMs = Math.max(0, endTimeMs - Date.now());
+    stop();
+
+    btnStart.disabled = false;
+    btnPause.disabled = true;
+    render();
+  }
+
+  function reset(){
+    stop();
+    remainingMs = readInputMs();
+    btnStart.disabled = false;
+    btnPause.disabled = true;
+    render();
+  }
+
+  function stop(){
+    clearInterval(intervalId);
+    intervalId = null;
+    endTimeMs = null;
+  }
+
+  btnStart.addEventListener('click', start);
+  btnPause.addEventListener('click', pause);
+  btnReset.addEventListener('click', reset);
+
+  remainingMs = readInputMs();
+  render();
+</script>
+  </body>
 </html>
-
-
-
-
-
