@@ -30,6 +30,7 @@ color: var(--text);
 background: var(--bg-bottom);
 padding: 20px;
 overflow-x: hidden;
+line-height: 1.5;
 }
 
 h1, h2, h3, .main-title{
@@ -59,6 +60,14 @@ padding: 22px 20px;
 background: var(--surface-strong);
 border: 1px solid var(--border);
 box-shadow: var(--shadow);
+backdrop-filter: blur(8px);
+transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.main:hover{
+transform: translateY(-2px);
+box-shadow: 0 16px 36px rgba(0,0,0,0.35);
+
 }
 
 .main-title{
@@ -124,6 +133,21 @@ font-size: 27px;
 text-align:center;
 font-family: "Outfit", system-ui, sans-serif;
 text-shadow: 0 6px 16px rgba(0,0,0,0.35);
+position: relative;
+padding-bottom: 10px;
+}
+
+.section-title::after{
+content: "";
+position: absolute;
+left: 50%;
+bottom: 0;
+width: 82px;
+height: 3px;
+border-radius: 999px;
+transform: translateX(-50%);
+background: linear-gradient(90deg, rgba(124,182,255,0.2), rgba(124,182,255,0.95), rgba(120,255,212,0.7));
+
 }
 
 .grid{
@@ -150,6 +174,19 @@ border: 1px solid var(--border);
 box-shadow: 0 12px 28px rgba(0,0,0,0.32);
 
 transition: transform 0.12s ease, border-color 0.12s ease, background 0.12s ease;
+position: relative;
+overflow: hidden;
+}
+
+.button::before{
+content: "";
+position: absolute;
+inset: 0;
+background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.12), transparent 68%);
+transform: translateX(-120%);
+transition: transform 0.35s ease;
+pointer-events: none;
+
 }
 
 h1:not(.main-title){
@@ -164,6 +201,10 @@ margin: 34px 0 26px;
 transform: translateY(-2px);
 border-color: rgba(124,182,255,0.45);
 background: rgba(255,255,255,0.11);
+.button:hover::before{
+transform: translateX(120%);
+}
+
 }
 
 .button:active{
@@ -186,6 +227,13 @@ margin-top: 8px;
 .timebox{
 border-radius: var(--radius);
 padding: 14px 12px;
+transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.timebox:hover{
+transform: translateY(-2px);
+border-color: rgba(124,182,255,0.4);
+
 background: var(--surface);
 border: 1px solid var(--border);
 text-align: center;
@@ -431,6 +479,56 @@ background: rgba(255,255,255,0.10);
   backdrop-filter: blur(8px);
 
 }
+
+::-webkit-scrollbar{
+  width: 12px;
+}
+
+::-webkit-scrollbar-track{
+  background: rgba(255,255,255,0.05);
+}
+
+::-webkit-scrollbar-thumb{
+  background: rgba(124,182,255,0.52);
+  border-radius: 999px;
+  border: 2px solid rgba(10,18,32,0.7);
+}
+
+::-webkit-scrollbar-thumb:hover{
+  background: rgba(124,182,255,0.75);
+}
+
+@media (max-width: 640px){
+  body{
+    padding: 12px;
+  }
+
+  .wrap{
+    padding: 26px 8px 44px;
+  }
+
+  .grid,
+  .countdown{
+    grid-template-columns: 1fr;
+  }
+
+  .main-title{
+    font-size: 2.2rem;
+  }
+
+  .section-title{
+    font-size: 1.55rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce){
+  *, *::before, *::after{
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 
 .intro-panel h1{
   margin: 0 0 10px;
