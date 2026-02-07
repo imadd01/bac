@@ -1,98 +1,228 @@
 <!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>View PDF</title>
-    <link rel="stylesheet" href="appearance.css"/>
-  </head>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>View PDF</title>
+  <link rel="stylesheet" href="./appearance.css" />
+</head>
 
-  <body>
-    <div class="exam-layout">
-      <iframe id="pdf-viewer" class="pdf-frame"></iframe>
-      <p id="pdf-error" class="pdf-error" hidden>Ajoute un paramètre <strong>?pdf=</strong> dans l’URL pour afficher un sujet.</p>
+<body>
+  <div class="exam-layout">
+    <iframe id="pdf-viewer" class="pdf-frame" title="PDF viewer"></iframe>
+    <p id="pdf-error" class="pdf-error" hidden></p>
 
-     
-     <aside class="timer-panel">
-  <h3>Minuteur</h3>
+    <aside class="timer-panel">
+      <h3>Minuteur</h3>
 
-<div id="timer-display" class="timer-display">00:00:00</div>
+      <div id="timer-display" class="timer-display">00:00:00</div>
 
-  <div class="timer-inputs">
-    <label>Hrs <input id="t-hours" type="number" min="0" value="0"></label>
-    <label>Min <input id="t-mins"  type="number" min="0" max="59" value="0"></label>
-    <label>Sec <input id="t-secs"  type="number" min="0" max="59" value="0"></label>
+      <div class="timer-inputs">
+        <label>Hrs <input id="t-hours" type="number" min="0" value="0"></label>
+        <label>Min <input id="t-mins" type="number" min="0" max="59" value="0"></label>
+        <label>Sec <input id="t-secs" type="number" min="0" max="59" value="0"></label>
+      </div>
+
+      <div class="timer-buttons">
+        <button id="t-start" type="button">►</button>
+        <button id="t-pause" type="button" disabled>⏸</button>
+        <button id="t-reset" type="button">⭯</button>
+        <hr class="timer-sep">
+      </div>
+
+      <p class="timer-note">
+        La vraie difficulté de l’examen national, c’est le temps très limité. Beaucoup d’élèves connaissent bien le cours,
+        mais n’arrivent pas à finir à cause d’une mauvaise gestion du temps. Entraîne-toi avec un chronomètre et essaie
+        de t’améliorer à chaque fois.
+      </p>
+    </aside>
   </div>
 
-  <div class="timer-buttons">
-    <button id="t-start">►</button>
-    <button id="t-pause" disabled>⏹</button>
-    <button id="t-reset">⭯</button>
+  <script>
+    (() => {
+      const pdfViewer = document.getElementById('pdf-viewer');
+      const pdfError  = document.getElementById('pdf-error');
+      let pdfObjectUrl = null;
 
-    <hr class="timer-sep">
-  </div>
-       <p class="timer-note">
-La vraie difficulté de l’examen national, c’est le temps très limité. Beaucoup d’élèves connaissent bien le cours, mais n’arrivent pas à finir à cause d’une mauvaise gestion du temps. Entraîne-toi avec un chronomètre et essaie de t’améliorer à chaque fois.</p>
-</aside>
-    </div>
-
-    <script>
-  const urlParams = new URLSearchParams(window.location.search);
-  const pdfPath = urlParams.get('pdf');
-  document.getElementById('pdf-viewer').src = pdfPath;
-  const pdfViewer = document.getElementById('pdf-viewer');
-  const pdfError = document.getElementById('pdf-error');
-  let pdfObjectUrl = null;
-
-  if (pdfPath) {
-    pdfViewer.src = pdfPath;
-    fetch(pdfPath)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`PDF load failed: ${response.status}`);
-        }
-        return response.blob();
-      })
-      .then((blob) => {
-        pdfObjectUrl = URL.createObjectURL(blob);
-        pdfViewer.src = pdfObjectUrl;
-      })
-      .catch(() => {
+      function showError(msg) {
         pdfViewer.src = 'about:blank';
+        pdfError.textContent = msg;
         pdfError.hidden = false;
+      }
+
+      const pdfParam = new URLSearchParams(location.search).get('pdf');
+      if (!pdfParam) {
+        showError('Ajoute un paramètre ?pdf= dans l’URL pour afficher un sujet.');
+        return;
+      }
+
+      let pdfUrl;
+      try {
+        pdfUrl = new URL(pdfParam, location.href);
+      } catch {
+        showError('Le paramètre ?pdf= est invalide.');
+        return;
+      }
+
+      if (!['http:', 'https:'].includes(pdfUrl.protocol)) {
+        showError('Lien PDF non autorisé (http/https uniquement).');
+        return;
+      }
+
+      if (pdfUrl.origin === location.origin) {
+        fetch(pdfUrl.href)
+          .then(r => {
+            if (!r.ok) throw new Error(String(r.status));
+            return r.blob();
+          })
+          .then(blob => {
+            pdfObjectUrl = URL.createObjectURL(blob);
+            pdfViewer.src = pdfObjectUrl;
+            pdfError.hidden = true;
+          })
+          .catch(() => {
+            pdfViewer.src = pdfUrl.href;
+            pdfError.hidden = true;
+          });
+      } else {
+        pdfViewer.src = pdfUrl.href;
+        pdfError.hidden = true;
+      }
+
+      addEventListener('beforeunload', () => {
+        if (pdfObjectUrl) URL.revokeObjectURL(pdfObjectUrl);
       });
-  } else {
-    pdfViewer.src = 'about:blank';
-    pdfError.hidden = false;
-  }
+    })();
 
-  window.addEventListener('beforeunload', () => {
-    if (pdfObjectUrl) {
-      URL.revokeObjectURL(pdfObjectUrl);
-    }
-  });
-  const display = document.getElementById('timer-display');
-  const hIn = document.getElementById('t-hours');
-  const mIn = document.getElementById('t-mins');
-  const sIn = document.getElementById('t-secs');
+    (() => {
+      const display = document.getElementById('timer-display');
+      const hIn = document.getElementById('t-hours');
+      const mIn = document.getElementById('t-mins');
+      const sIn = document.getElementById('t-secs');
 
-  const btnStart = document.getElementById('t-start');
-  const btnPause = document.getElementById('t-pause');
-  const btnReset = document.getElementById('t-reset');
+      const btnStart = document.getElementById('t-start');
+      const btnPause = document.getElementById('t-pause');
+      const btnReset = document.getElementById('t-reset');
 
-  let intervalId = null;
-  let endTimeMs = null;
-  let remainingMs = 0;
+      let intervalId = null;
+      let endTimeMs = null;
+      let remainingMs = 0;
+      let running = false;
 
-  function clamp(n, min, max){ return Math.min(max, Math.max(min, n)); }
+      function clamp(n, min, max) { return Math.min(max, Math.max(min, n)); }
 
-  function readInputMs(){
-    const h = clamp(Number(hIn.value || 0), 0, 999);
-    const m = clamp(Number(mIn.value || 0), 0, 59);
-    const s = clamp(Number(sIn.value || 0), 0, 59);
-    return (h * 3600 + m * 60 + s) * 1000;
-  }
+      function readInputMs() {
+        const h = clamp(Number(hIn.value || 0), 0, 999);
+        const m = clamp(Number(mIn.value || 0), 0, 59);
+        const s = clamp(Number(sIn.value || 0), 0, 59);
+        return (h * 3600 + m * 60 + s) * 1000;
+      }
 
-  function format(ms){
-    ms = Math.max(0, ms);
-    const total = Math.ceil(ms / 1000);
+      function format(ms) {
+        ms = Math.max(0, ms);
+        const totalSec = Math.ceil(ms / 1000);
+        const h = Math.floor(totalSec / 3600);
+        const m = Math.floor((totalSec % 3600) / 60);
+        const s = totalSec % 60;
+        return String(h).padStart(2, '0') + ':' + String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+      }
+
+      function setInputsEnabled(enabled) {
+        hIn.disabled = !enabled;
+        mIn.disabled = !enabled;
+        sIn.disabled = !enabled;
+      }
+
+      function setButtons() {
+        btnStart.disabled = running;
+        btnPause.disabled = !running;
+      }
+
+      function render(ms) {
+        display.textContent = format(ms);
+      }
+
+      function stopInterval() {
+        if (intervalId) clearInterval(intervalId);
+        intervalId = null;
+      }
+
+      function tick() {
+        const msLeft = endTimeMs - Date.now();
+        remainingMs = msLeft;
+
+        if (msLeft <= 0) {
+          render(0);
+          stopInterval();
+          running = false;
+          endTimeMs = null;
+          remainingMs = 0;
+          setInputsEnabled(true);
+          setButtons();
+          return;
+        }
+
+        render(msLeft);
+      }
+
+      function start() {
+        if (running) return;
+
+        const startMs = remainingMs > 0 ? remainingMs : readInputMs();
+        if (!startMs || startMs <= 0) {
+          render(0);
+          return;
+        }
+
+        remainingMs = startMs;
+        endTimeMs = Date.now() + startMs;
+        running = true;
+
+        setInputsEnabled(false);
+        setButtons();
+        tick();
+        stopInterval();
+        intervalId = setInterval(tick, 200);
+      }
+
+      function pause() {
+        if (!running) return;
+        running = false;
+        stopInterval();
+        remainingMs = Math.max(0, endTimeMs - Date.now());
+        endTimeMs = null;
+
+        setInputsEnabled(true);
+        setButtons();
+        render(remainingMs);
+      }
+
+      function reset() {
+        running = false;
+        stopInterval();
+        endTimeMs = null;
+        remainingMs = 0;
+
+        setInputsEnabled(true);
+        setButtons();
+        render(readInputMs());
+      }
+
+      function onInputsChange() {
+        if (!running) render(readInputMs());
+      }
+
+      btnStart.addEventListener('click', start);
+      btnPause.addEventListener('click', pause);
+      btnReset.addEventListener('click', reset);
+
+      hIn.addEventListener('input', onInputsChange);
+      mIn.addEventListener('input', onInputsChange);
+      sIn.addEventListener('input', onInputsChange);
+
+      setButtons();
+      render(readInputMs());
+    })();
+  </script>
+</body>
+</html>
