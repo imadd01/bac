@@ -555,7 +555,7 @@ background: rgba(255,255,255,0.10);
   margin: 0;
 }
 
-.coorection-list {
+.exam-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
