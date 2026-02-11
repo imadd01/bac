@@ -330,6 +330,7 @@ background: rgba(255,255,255,0.10);
   flex-direction: column;
   width: 320px;
   height: 88vh;
+  max-height:88vh;
   padding: 16px;
   border: 1px solid var(--border);
   border-radius: 16px;
@@ -339,6 +340,9 @@ background: rgba(255,255,255,0.10);
   box-shadow: 0 10px 30px rgba(0,0,0,0.25);
   position: sticky;
   top: 12px;
+  overflow-y: auto;
+  overflow-x: hidden;
+    
 }
 
 .timer-panel > *{
@@ -660,7 +664,9 @@ background: rgba(255,255,255,0.10);
   max-width: 850px;
   margin: 0 auto;
   text-wrap: pretty;
-
+  width:100%;
+  box-sizing: border-box;
+  overflow-wrap: anywhere;
 }
 
 .intro-panel p + p{
