@@ -51,7 +51,7 @@ All implemented features are fully functional.
 Some documents are still being gathered and will be progressively integrated.
 
 
-##  Tech Stack
+##  Tech
 
 - HTML  
 - CSS  
@@ -78,5 +78,5 @@ I have independently designed, developed and deployed the project.
 
 As a student preparing for the national exam myself, I experienced firsthand the difficulty of finding structured and reliable resources.
 
-2BAC-HUB reflects my interest in using technology to solve practical educational problems and improve accessibility for other students.
+2BAC-HUB reflects my interest in coding to solve practical educational problems and improve accessibility for other students.
 
