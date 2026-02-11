@@ -662,6 +662,7 @@ background: rgba(255,255,255,0.10);
   color: rgba(242,248,255,0.94);
   font-size: clamp(1.02rem, 1vw + 0.75rem, 1.2rem);
   line-height: 1.7;
+  text-align: center;
   max-width: 850px;
   margin: 0 auto;
   text-wrap: pretty;
