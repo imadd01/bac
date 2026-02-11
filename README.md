@@ -87,7 +87,3 @@ As a student preparing for the national exam myself, I experienced firsthand the
 2BAC-HUB reflects my interest in using technology to solve practical educational problems and improve accessibility for other students.
 
 ---
-
-<p align="center">
-  Built with purpose. Designed for students.
-</p>
