@@ -13,21 +13,23 @@
 
 <body>
    <main class="index-wrap">
-    <h1 class="index-title">Choisis ton niveau</h1>
-    <p class="index-subtitle">Accède rapidement aux sujets, corrections et ressources pour préparer ton examen.</p>
+    <section class="main index-main-card" aria-label="Choix du niveau">
+      <h1 class="index-title">Choisis ton niveau</h1>
+      <p class="index-subtitle">Accède rapidement aux sujets, corrections et ressources pour préparer ton examen.</p>
 
-    <section class="grid index-card-grid" aria-label="Niveaux disponibles">
-      <article class="index-card">
-        <h2 class="index-card-title">2-BAC</h2>
-        <p class="index-card-description">Explore les examens nationaux, les filières scientifiques et les ressources de révision pour la deuxième année du bac.</p>
-        <a class="index-enter-button" href="2bac.html">Entrer</a>
-      </article>
+      <div class="index-card-grid" aria-label="Niveaux disponibles">
+        <article class="timebox index-level-card">
+          <h2 class="index-card-title">2-BAC</h2>
+          <p class="index-card-description">Explore les examens nationaux, les filières scientifiques et les ressources de révision pour la deuxième année du bac.</p>
+          <button type="button" class="index-enter-button" onclick="window.location.href='2bac.html'">Acceder</button>
+        </article>
 
-      <article class="index-card">
-        <h2 class="index-card-title">1-BAC</h2>
-        <p class="index-card-description">Retrouve les sujets régionaux, les matières principales et les entraînements essentiels pour la première année.</p>
-        <a class="index-enter-button" href="1bac.html">Entrer</a>
-      </article>
+        <article class="timebox index-level-card">
+          <h2 class="index-card-title">1-BAC</h2>
+          <p class="index-card-description">Retrouve les sujets régionaux, les matières principales et les entraînements essentiels pour la première année.</p>
+          <button type="button" class="index-enter-button" onclick="window.location.href='1bac.html'">Acceder</button>
+        </article>
+      </div>
     </section>
   </main>
 </body>
